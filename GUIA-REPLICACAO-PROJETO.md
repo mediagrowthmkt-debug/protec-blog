@@ -63,24 +63,30 @@ protec-blog/
 │       ├── blog-post.js       # JavaScript dos posts
 │       └── form-script.js     # Lógica do formulário (1300+ linhas)
 │
-├── 📂 posts/
+├── 📂 drafts/                 # ⭐ RASCUNHOS - coloque aqui os .html baixados!
+│   └── README.md              # Instruções
+│
+├── 📂 posts/                  # ✅ PUBLICADOS - movidos automaticamente
 │   ├── index.html             # Listagem alternativa de posts
-│   └── *.html                 # Posts publicados
+│   └── *.html                 # Posts publicados (vem de /drafts/)
 │
 ├── 📂 templates/
 │   └── post-template.html     # Template base para novos posts
 │
-├── 📂 drafts/
-│   └── README.md              # Pasta para rascunhos
-│
-├── 📄 github-api.js           # Integração com GitHub API
+├──  github-api.js           # Integração com GitHub API
 ├── 📄 github-actions-api.js   # API para GitHub Actions
 │
 ├── 📂 .github/workflows/
-│   ├── auto-publish-drafts.yml
+│   ├── auto-publish-drafts.yml  # ⭐ Move drafts → posts automaticamente
 │   └── publish-post.yml
 │
 └── 📄 *.md                    # Documentações
+```
+
+### Fluxo de Pastas
+
+```
+/drafts/  ──(GitHub Action)──▶  /posts/  ──(GitHub Pages)──▶  🌐 Online
 ```
 
 ---
@@ -284,18 +290,20 @@ class GitHubBlogPublisher {
 
 ### GitHub Actions (Workflows)
 
-**auto-publish-drafts.yml:**
-- Publica automaticamente posts da pasta `/drafts/`
-- Roda em schedule ou manualmente
+**auto-publish-drafts.yml** ⭐ (Principal):
+- Dispara quando há push em `drafts/*.html`
+- Move automaticamente para `/posts/`
+- Faz commit e push automático
+- Resultado: post publicado no GitHub Pages
 
 **publish-post.yml:**
-- Workflow para publicar posts via Actions
+- Workflow alternativo para publicar posts via Actions
 
 ---
 
 ## 📤 PROCESSO DE PUBLICAÇÃO
 
-### Fluxo Completo
+### Fluxo Completo (Atual)
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
@@ -305,21 +313,61 @@ class GitHubBlogPublisher {
                                                         │
                                                         ▼
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  6. PUBLICADO!  │ ◀── │  5. PUSH GITHUB │ ◀── │  4. MOVER PARA  │
-│   GitHub Pages  │     │   git push      │     │   pasta /posts/ │
+│  6. PUBLICADO!  │ ◀── │  5. GITHUB      │ ◀── │  4. MOVER PARA  │
+│   GitHub Pages  │     │     ACTION      │     │  pasta /drafts/ │
+│   em /posts/    │     │   (automático)  │     │   + git push    │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
 ```
+
+### Como Funciona
+
+1. **Você baixa o HTML** gerado pelo formulário
+2. **Move para `/drafts/`** (não para /posts/ diretamente)
+3. **Faz commit e push** para o GitHub
+4. **GitHub Action detecta** o novo arquivo em `/drafts/`
+5. **Automaticamente move** de `/drafts/` para `/posts/`
+6. **GitHub Pages publica** o post
 
 ### Comandos Git
 
 ```bash
-# Adicionar novo post
-git add posts/nome-do-post.html
-git commit -m "feat: novo post - Nome do Post"
+# 1. Mover arquivo baixado para drafts
+mv ~/Downloads/nome-do-post.html drafts/
+
+# 2. Commit e push
+git add drafts/
+git commit -m "draft: novo post - Nome do Post"
 git push origin main
 
-# O GitHub Pages publica automaticamente em ~1 minuto
+# 3. PRONTO! O GitHub Action faz o resto automaticamente
+#    - Move de /drafts/ para /posts/
+#    - Faz commit automático
+#    - GitHub Pages publica
 ```
+
+### GitHub Action: auto-publish-drafts.yml
+
+```yaml
+# Dispara quando há push em drafts/*.html
+on:
+  push:
+    paths:
+      - 'drafts/*.html'
+
+# O que faz:
+# 1. Move todos os .html de /drafts/ para /posts/
+# 2. Faz commit automático
+# 3. Push para o repositório
+```
+
+### Vantagens deste Fluxo
+
+| Benefício | Descrição |
+|-----------|-----------|
+| 📝 **Revisão** | Você pode revisar em `/drafts/` antes de publicar |
+| 🤖 **Automático** | Não precisa mover manualmente para `/posts/` |
+| 📊 **Histórico** | Git mostra quando foi draft e quando foi publicado |
+| 🔄 **Simples** | Apenas um push e o resto é automático |
 
 ---
 
@@ -397,9 +445,34 @@ git push -u origin main
 ☐ Editar templates/post-template.html (URLs)
 ☐ Personalizar CSS (cores, fontes)
 ☐ Ativar GitHub Pages nas configurações
+☐ Verificar se GitHub Actions está habilitado
 ☐ Fazer primeiro commit e push
 ☐ Testar criação de post via /postin
+☐ Testar fluxo: baixar HTML → mover para /drafts/ → push
+☐ Verificar se Action moveu para /posts/
 ☐ Verificar publicação no GitHub Pages
+```
+
+---
+
+## 🚀 RESUMO RÁPIDO (TL;DR)
+
+```bash
+# 1. Criar post no formulário
+abrir: seusite.github.io/postin
+
+# 2. Baixar HTML gerado
+clicar: "Gerar Post" → Download
+
+# 3. Mover para drafts e publicar
+mv ~/Downloads/meu-post.html drafts/
+git add drafts/
+git commit -m "draft: meu novo post"
+git push
+
+# 4. PRONTO! GitHub Action faz o resto
+# - Move de /drafts/ para /posts/
+# - Publica automaticamente
 ```
 
 ---
