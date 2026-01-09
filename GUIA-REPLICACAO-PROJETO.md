@@ -424,7 +424,45 @@ return new GitHubBlogPublisher({
 3. Branch: `main` / `/ (root)`
 4. Save
 
-### Passo 5: Primeiro Commit
+### Passo 5: ⚠️ Ativar GitHub Actions (IMPORTANTE!)
+
+Para a automação `/drafts/` → `/posts/` funcionar, você precisa:
+
+**5.1. Habilitar Actions no Repositório:**
+1. Vá em: `Settings` → `Actions` → `General`
+2. Em **"Actions permissions"**, selecione:
+   - ✅ `Allow all actions and reusable workflows`
+3. Clique em `Save`
+
+**5.2. Dar Permissão de Escrita ao Workflow:**
+1. Na mesma página, role até **"Workflow permissions"**
+2. Selecione:
+   - ✅ `Read and write permissions`
+3. Marque também:
+   - ✅ `Allow GitHub Actions to create and approve pull requests` (opcional)
+4. Clique em `Save`
+
+```
+⚠️ SEM ESSAS CONFIGURAÇÕES, O WORKFLOW NÃO CONSEGUE:
+   - Fazer commit automático
+   - Mover arquivos de /drafts/ para /posts/
+   - Push das alterações
+```
+
+**Caminho visual:**
+```
+GitHub Repo → Settings → Actions → General
+                           ↓
+              ┌─────────────────────────────┐
+              │ Actions permissions         │
+              │ ✅ Allow all actions        │
+              ├─────────────────────────────┤
+              │ Workflow permissions        │
+              │ ✅ Read and write           │
+              └─────────────────────────────┘
+```
+
+### Passo 6: Primeiro Commit
 
 ```bash
 git add .
@@ -444,12 +482,13 @@ git push -u origin main
 ☐ Editar index.html (título, descrição)
 ☐ Editar templates/post-template.html (URLs)
 ☐ Personalizar CSS (cores, fontes)
-☐ Ativar GitHub Pages nas configurações
-☐ Verificar se GitHub Actions está habilitado
+☐ Ativar GitHub Pages (Settings → Pages)
+☐ ⚠️ Ativar GitHub Actions (Settings → Actions → General)
+☐ ⚠️ Workflow permissions: "Read and write" (OBRIGATÓRIO!)
 ☐ Fazer primeiro commit e push
 ☐ Testar criação de post via /postin
 ☐ Testar fluxo: baixar HTML → mover para /drafts/ → push
-☐ Verificar se Action moveu para /posts/
+☐ Verificar se Action moveu para /posts/ (aba Actions no GitHub)
 ☐ Verificar publicação no GitHub Pages
 ```
 
