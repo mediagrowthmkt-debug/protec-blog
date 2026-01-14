@@ -1,433 +1,864 @@
-# 📖 GUIA COMPLETO - Sistema de Blog com GitHub Pages# 📖 GUIA COMPLETO - Sistema de Blog com GitHub Pages
+# 📖 GUIA COMPLETO - Sistema de Blog com GitHub Pages# 📖 GUIA COMPLETO - Sistema de Blog com GitHub Pages# 📖 GUIA COMPLETO - Sistema de Blog com GitHub Pages
 
 
 
-> **Documentação para replicar este projeto em outros diretórios**> **Documentação para replicar este projeto em outros diretórios**
+> **Versão 4.1 - Sistema com 5 versões de teste e publicação automática**
 
 
 
-------
+---> **Documentação para replicar este projeto em outros diretórios**> **Documentação para replicar este projeto em outros diretórios**
 
 
 
-## 📋 ÍNDICE## 📋 ÍNDICE
+## 📋 ÍNDICE
 
 
 
-1. [Visão Geral do Projeto](#-visão-geral-do-projeto)1. [Visão Geral do Projeto](#-visão-geral-do-projeto)
+1. [Visão Geral do Projeto](#-visão-geral-do-projeto)------
+
+2. [Estrutura de Arquivos](#-estrutura-de-arquivos)
+
+3. [Hierarquia de URLs/Slugs](#-hierarquia-de-urlsslugs)
+
+4. [Página de Formulário (postin.html)](#-página-de-formulário-postinhtml)
+
+5. [Os 8 Blocos do Formulário](#-os-8-blocos-do-formulário)## 📋 ÍNDICE## 📋 ÍNDICE
+
+6. [Botões e Funcionalidades](#-botões-e-funcionalidades)
+
+7. [Integração com GitHub](#-integração-com-github)
+
+8. [Processo de Publicação](#-processo-de-publicação)
+
+9. [Como Replicar o Projeto](#-como-replicar-o-projeto)1. [Visão Geral do Projeto](#-visão-geral-do-projeto)1. [Visão Geral do Projeto](#-visão-geral-do-projeto)
+
+10. [Troubleshooting](#-troubleshooting)
 
 2. [Estrutura de Arquivos](#-estrutura-de-arquivos)2. [Estrutura de Arquivos](#-estrutura-de-arquivos)
 
+---
+
 3. [Hierarquia de URLs/Slugs](#-hierarquia-de-urlsslugs)3. [Hierarquia de URLs/Slugs](#-hierarquia-de-urlsslugs)
+
+## 🎯 VISÃO GERAL DO PROJETO
 
 4. [Página de Formulário (postin.html)](#-página-de-formulário-postinhtml)4. [Página de Formulário (postin.html)](#-página-de-formulário-postinhtml)
 
+Sistema **100% estático** de blog hospedado no **GitHub Pages**, sem necessidade de servidor backend (PHP, Node, etc).
+
 5. [Integração com GitHub](#-integração-com-github)5. [Integração com GitHub](#-integração-com-github)
+
+### Arquitetura
 
 6. [Processo de Publicação](#-processo-de-publicação)6. [Processo de Publicação](#-processo-de-publicação)
 
-7. [Como Replicar o Projeto](#-como-replicar-o-projeto)7. [Como Replicar o Projeto](#-como-replicar-o-projeto)
+```
+
+┌─────────────────────────────────────────────────────────────┐7. [Como Replicar o Projeto](#-como-replicar-o-projeto)7. [Como Replicar o Projeto](#-como-replicar-o-projeto)
+
+│                      NAVEGADOR                              │
+
+├─────────────────────────────────────────────────────────────┤
+
+│  /postin.html  →  Formulário de criação de posts            │
+
+│  /index.html   →  Lista de posts (home do blog)             │------
+
+│  /posts/*.html →  Posts publicados                          │
+
+├─────────────────────────────────────────────────────────────┤
+
+│                    GITHUB PAGES                             │
+
+│              (Hospedagem estática gratuita)                 │## 🎯 VISÃO GERAL DO PROJETO## 🎯 VISÃO GERAL DO PROJETO
+
+└─────────────────────────────────────────────────────────────┘
+
+```
 
 
 
-------
+### TecnologiasSistema **100% estático** de blog hospedado no **GitHub Pages**, sem necessidade de servidor backend (PHP, Node, etc).Sistema **100% estático** de blog hospedado no **GitHub Pages**, sem necessidade de servidor backend (PHP, Node, etc).
 
 
 
-## 🎯 VISÃO GERAL DO PROJETO## 🎯 VISÃO GERAL DO PROJETO
+| Componente | Tecnologia |
+
+|------------|------------|
+
+| Frontend | HTML5, CSS3, JavaScript Vanilla |### Arquitetura### Arquitetura
+
+| Hospedagem | GitHub Pages |
+
+| Armazenamento | GitHub Repository |
+
+| Integração | GitHub API v3 (opcional) |
+
+| SEO | Schema.org, Open Graph, Twitter Cards |``````
 
 
 
-Sistema **100% estático** de blog hospedado no **GitHub Pages**, sem necessidade de servidor backend (PHP, Node, etc).Sistema **100% estático** de blog hospedado no **GitHub Pages**, sem necessidade de servidor backend (PHP, Node, etc).
+---┌─────────────────────────────────────────────────────────────┐┌─────────────────────────────────────────────────────────────┐
 
 
 
-### Arquitetura### Arquitetura
+## 📁 ESTRUTURA DE ARQUIVOS│                      NAVEGADOR                              ││                      NAVEGADOR                              │
 
 
 
-``````
+```├─────────────────────────────────────────────────────────────┤├─────────────────────────────────────────────────────────────┤
 
-┌─────────────────────────────────────────────────────────────┐┌─────────────────────────────────────────────────────────────┐
+BLOGS/
 
-│                      NAVEGADOR                              ││                      NAVEGADOR                              │
+├── index.html              # Home do blog│  /postin.html  →  Formulário de criação de posts            ││  /postin.html  →  Formulário de criação de posts            │
 
-├─────────────────────────────────────────────────────────────┤├─────────────────────────────────────────────────────────────┤
+├── postin.html             # Formulário de criação
 
-│  /postin.html  →  Formulário de criação de posts            ││  /postin.html  →  Formulário de criação de posts            │
+├── github-api.js           # Integração com GitHub API│  /index.html   →  Lista de posts (home do blog)             ││  /index.html   →  Lista de posts (home do blog)             │
 
-│  /index.html   →  Lista de posts (home do blog)             ││  /index.html   →  Lista de posts (home do blog)             │
+├── assets/
 
-│  /posts/*.html →  Posts publicados                          ││  /posts/*.html →  Posts publicados                          │
+│   ├── css/│  /posts/*.html →  Posts publicados                          ││  /posts/*.html →  Posts publicados                          │
 
-├─────────────────────────────────────────────────────────────┤├─────────────────────────────────────────────────────────────┤
+│   │   ├── form-style.css      # Estilos do formulário
 
-│                    GITHUB PAGES                             ││                    GITHUB PAGES                             │
+│   │   └── blog-post.css       # Estilos dos posts├─────────────────────────────────────────────────────────────┤├─────────────────────────────────────────────────────────────┤
 
-│              (Hospedagem estática gratuita)                 ││              (Hospedagem estática gratuita)                 │
+│   ├── js/
 
-└─────────────────────────────────────────────────────────────┘└─────────────────────────────────────────────────────────────┘
+│   │   ├── form-script.js      # Lógica do formulário + 5 versões teste│                    GITHUB PAGES                             ││                    GITHUB PAGES                             │
 
-``````
+│   │   └── blog-post.js        # Funcionalidades dos posts
 
+│   └── images/                 # Imagens estáticas│              (Hospedagem estática gratuita)                 ││              (Hospedagem estática gratuita)                 │
 
+├── posts/
 
-### Tecnologias### Tecnologias
+│   ├── index.html              # Lista de posts└─────────────────────────────────────────────────────────────┘└─────────────────────────────────────────────────────────────┘
 
+│   └── *.html                  # Posts publicados
 
+├── drafts/``````
+
+│   └── *.html                  # Posts em rascunho
+
+├── templates/
+
+│   └── post-template.html      # Template base
+
+└── .github/### Tecnologias### Tecnologias
+
+    └── workflows/
+
+        └── auto-publish-drafts.yml   # GitHub Action
+
+```
 
 | Componente | Tecnologia || Componente | Tecnologia |
 
+---
+
 |------------|------------||------------|------------|
+
+## 🔗 HIERARQUIA DE URLs/SLUGS
 
 | Frontend | HTML5, CSS3, JavaScript Vanilla || Frontend | HTML5, CSS3, JavaScript Vanilla |
 
-| Hospedagem | GitHub Pages || Hospedagem | GitHub Pages |
+```
 
-| Armazenamento | GitHub Repository || Armazenamento | GitHub Repository |
+https://seusite.com/| Hospedagem | GitHub Pages || Hospedagem | GitHub Pages |
 
-| Integração | GitHub API v3 (opcional) || Integração | GitHub API v3 (opcional) |
+├── /                           → index.html (Home)
+
+├── /postin.html                → Formulário| Armazenamento | GitHub Repository || Armazenamento | GitHub Repository |
+
+├── /posts/                     → Lista de posts
+
+└── /posts/nome-do-post.html    → Post individual| Integração | GitHub API v3 (opcional) || Integração | GitHub API v3 (opcional) |
+
+```
 
 | SEO | Schema.org, Open Graph, Twitter Cards || SEO | Schema.org, Open Graph, Twitter Cards |
 
+### Convenção de Slugs
 
 
-------
 
+| ✅ Correto | ❌ Evitar |
 
+|-----------|----------|------
+
+| `guia-granito-cozinha` | `Guia_Granito_Cozinha` |
+
+| `como-instalar-pedra` | `como instalar pedra` |
+
+| `5-dicas-limpeza` | `5DicasLimpeza` |
 
 ## 📁 ESTRUTURA DE ARQUIVOS## 📁 ESTRUTURA DE ARQUIVOS
 
+---
 
+
+
+## 📝 PÁGINA DE FORMULÁRIO (postin.html)
 
 ``````
+
+O formulário está dividido em **8 blocos principais** + **1 bloco de IA**.
 
 protec-blog/protec-blog/
 
-││
-
-├── 📄 index.html              # Home do blog (lista de posts)├── 📄 index.html              # Home do blog (lista de posts)
-
-├── 📄 postin.html             # Formulário de criação (URL secreta)├── 📄 postin.html             # Formulário de criação (URL secreta)
+### Fluxo do Formulário
 
 ││
 
-├── 📂 assets/├── 📂 assets/
+```
 
-│   ├── 📂 css/│   ├── 📂 css/
+[Preencher Campos] ├── 📄 index.html              # Home do blog (lista de posts)├── 📄 index.html              # Home do blog (lista de posts)
 
-│   │   ├── blog-post.css      # Estilos dos posts publicados│   │   ├── blog-post.css      # Estilos dos posts publicados
+       ↓
 
-│   │   └── form-style.css     # Estilos do formulário│   │   └── form-style.css     # Estilos do formulário
+[Pré-visualizar] ─→ [Ajustar se necessário]├── 📄 postin.html             # Formulário de criação (URL secreta)├── 📄 postin.html             # Formulário de criação (URL secreta)
 
-│   └── 📂 js/│   └── 📂 js/
+       ↓
 
-│       ├── blog-post.js       # JavaScript dos posts│       ├── blog-post.js       # JavaScript dos posts
+[Gerar Post]││
+
+       ↓
+
+  ┌────┴────┐├── 📂 assets/├── 📂 assets/
+
+  │         │
+
+Token?    Sem Token│   ├── 📂 css/│   ├── 📂 css/
+
+  │         │
+
+  ↓         ↓│   │   ├── blog-post.css      # Estilos dos posts publicados│   │   ├── blog-post.css      # Estilos dos posts publicados
+
+GitHub    Download
+
+  API      .html│   │   └── form-style.css     # Estilos do formulário│   │   └── form-style.css     # Estilos do formulário
+
+  │         │
+
+  ↓         ↓│   └── 📂 js/│   └── 📂 js/
+
+Auto     Manual
+
+Publish  Upload│       ├── blog-post.js       # JavaScript dos posts│       ├── blog-post.js       # JavaScript dos posts
+
+```
 
 │       └── form-script.js     # Lógica do formulário (1300+ linhas)│       └── form-script.js     # Lógica do formulário (1300+ linhas)
 
+---
+
 ││
+
+## 🧱 OS 8 BLOCOS DO FORMULÁRIO
 
 ├── 📂 drafts/                 # ⭐ RASCUNHOS - coloque aqui os .html baixados!├── 📂 drafts/                 # ⭐ RASCUNHOS - coloque aqui os .html baixados!
 
+### 🧱 BLOCO 1: Identidade do Post
+
 │   └── README.md              # Instruções│   └── README.md              # Instruções
 
+| Campo | Obrigatório | Descrição |
+
+|-------|-------------|-----------|││
+
+| Título Principal (H1) | ✅ | Máx. 60 caracteres |
+
+| Slug/URL | Auto | Gerado do título |├── 📂 posts/                  # ✅ PUBLICADOS - movidos automaticamente├── 📂 posts/                  # ✅ PUBLICADOS - movidos automaticamente
+
+| Categoria | ✅ | Guia, Tutorial, Blog, Vlog, Dicas, Novidades |
+
+| Autor | ✅ | Nome do autor |│   ├── index.html             # Listagem alternativa de posts│   ├── index.html             # Listagem alternativa de posts
+
+| Avatar do Autor | ❌ | URL da imagem |
+
+| Data de Publicação | Auto | Usa data atual se vazio |│   └── *.html                 # Posts publicados (vem de /drafts/)│   └── *.html                 # Posts publicados (vem de /drafts/)
+
+| Tempo de Leitura | Auto | Calculado automaticamente |
+
 ││
 
-├── 📂 posts/                  # ✅ PUBLICADOS - movidos automaticamente├── 📂 posts/                  # ✅ PUBLICADOS - movidos automaticamente
-
-│   ├── index.html             # Listagem alternativa de posts│   ├── index.html             # Listagem alternativa de posts
-
-│   └── *.html                 # Posts publicados (vem de /drafts/)│   └── *.html                 # Posts publicados (vem de /drafts/)
-
-││
+### 🧠 BLOCO 2: SEO Essencial
 
 ├── 📂 templates/├── 📂 templates/
 
-│   └── post-template.html     # Template base para novos posts│   └── post-template.html     # Template base para novos posts
+| Campo | Obrigatório | Descrição |
 
-││
+|-------|-------------|-----------|│   └── post-template.html     # Template base para novos posts│   └── post-template.html     # Template base para novos posts
 
-├── 📄 github-api.js           # Integração com GitHub API├──  github-api.js           # Integração com GitHub API
+| Palavra-chave Principal | ✅ | Base do post inteiro |
+
+| Palavras-chave Secundárias | ❌ | 3-5, separadas por vírgula |││
+
+| Meta Title | ✅ | Até 60 caracteres |
+
+| Meta Description | ✅ | 140-160 caracteres |├── 📄 github-api.js           # Integração com GitHub API├──  github-api.js           # Integração com GitHub API
+
+| Intenção de Busca | ✅ | Informacional/Comercial/Navegacional/Transacional |
 
 ├── 📄 github-actions-api.js   # API para GitHub Actions├── 📄 github-actions-api.js   # API para GitHub Actions
 
-││
-
-├── 📂 .github/workflows/├── 📂 .github/workflows/
-
-│   ├── auto-publish-drafts.yml  # ⭐ Move drafts → posts automaticamente│   ├── auto-publish-drafts.yml  # ⭐ Move drafts → posts automaticamente
-
-│   └── publish-post.yml│   └── publish-post.yml
+### 🖼️ BLOCO 3: Imagens
 
 ││
 
-└── 📄 *.md                    # Documentações└── 📄 *.md                    # Documentações
+| Campo | Obrigatório | Descrição |
 
-``````
+|-------|-------------|-----------|├── 📂 .github/workflows/├── 📂 .github/workflows/
+
+| URL da Imagem de Capa | ✅ | 1200x630px recomendado |
+
+| Alt Text Principal | ✅ | Descritivo com keyword |│   ├── auto-publish-drafts.yml  # ⭐ Move drafts → posts automaticamente│   ├── auto-publish-drafts.yml  # ⭐ Move drafts → posts automaticamente
+
+| Legenda da Imagem | ❌ | Caption opcional |
+
+| Imagens Internas | ✅ | Mínimo 2 (URL + Alt) |│   └── publish-post.yml│   └── publish-post.yml
 
 
 
-### Fluxo de Pastas### Fluxo de Pastas
+### ✍️ BLOCO 4: Conteúdo do Post││
 
 
 
-``````
+| Campo | Obrigatório | Descrição |└── 📄 *.md                    # Documentações└── 📄 *.md                    # Documentações
+
+|-------|-------------|-----------|
+
+| Introdução | ✅ | 100-150 palavras |``````
+
+| Conteúdo Principal | ✅ | HTML formatado (H2, H3, P, UL) |
+
+| Conclusão | ✅ | Resumo + CTA leve |
+
+
+
+### 🔗 BLOCO 5: Links### Fluxo de Pastas### Fluxo de Pastas
+
+
+
+| Campo | Obrigatório | Descrição |
+
+|-------|-------------|-----------|
+
+| Links Internos | ❌ | 2-4 por post (URL + Anchor) |``````
+
+| Links Externos | ❌ | 1-2 sites confiáveis |
 
 /drafts/  ──(GitHub Action)──▶  /posts/  ──(GitHub Pages)──▶  🌐 Online/drafts/  ──(GitHub Action)──▶  /posts/  ──(GitHub Pages)──▶  🌐 Online
 
-``````
-
-
-
-------
-
-
-
-## 🔗 HIERARQUIA DE URLs/SLUGS## 🔗 HIERARQUIA DE URLs/SLUGS
-
-
-
-### Estrutura de URLs### Estrutura de URLs
-
-
+### 🏷️ BLOCO 6: Tags e Organização
 
 ``````
 
-seusite.github.io/seusite.github.io/
+| Campo | Obrigatório | Descrição |
 
-││
+|-------|-------------|-----------|
 
-├── /                    → index.html (Home do blog)├── /                    → index.html (Home do blog)
+| Tags do Post | ✅ | 3-6, separadas por vírgula |
 
-├── /postin              → postin.html (Formulário - URL secreta!)├── /postin              → postin.html (Formulário - URL secreta!)
+| Posts Relacionados | ❌ | URLs separados por vírgula |------
 
-││
 
-└── /posts/└── /posts/
 
-    ├── /                → posts/index.html (Lista de posts)    ├── /                → posts/index.html (Lista de posts)
+### 🚀 BLOCO 7: Engajamento (CTA)
 
-    └── /slug-do-post.html → Post individual    └── /slug-do-post.html → Post individual
+
+
+| Campo | Obrigatório | Descrição |## 🔗 HIERARQUIA DE URLs/SLUGS## 🔗 HIERARQUIA DE URLs/SLUGS
+
+|-------|-------------|-----------|
+
+| Título CTA | ✅ | Ex: "Precisa de ajuda?" |
+
+| Texto CTA | ✅ | Descrição do call-to-action |
+
+| Link CTA | ✅ | URL de destino |### Estrutura de URLs### Estrutura de URLs
+
+| Texto Botão | ✅ | Ex: "Solicitar Orçamento" |
+
+
+
+### ⚙️ BLOCO 8: Configurações
 
 ``````
 
+| Campo | Descrição |
+
+|-------|-----------|seusite.github.io/seusite.github.io/
+
+| URL Base | URL principal do site |
+
+| URL Logo | Para Schema.org |││
+
+| Comentários | Habilitar/Desabilitar |
+
+| Compartilhamento | Botões sociais |├── /                    → index.html (Home do blog)├── /                    → index.html (Home do blog)
 
 
-### Exemplo Prático### Exemplo Prático
+
+---├── /postin              → postin.html (Formulário - URL secreta!)├── /postin              → postin.html (Formulário - URL secreta!)
 
 
 
-| URL | Arquivo | Descrição || URL | Arquivo | Descrição |
+## 🔘 BOTÕES E FUNCIONALIDADES││
 
-|-----|---------|-----------||-----|---------|-----------|
 
-| `blog.exemplo.com/` | `index.html` | Página inicial || `blog.exemplo.com/` | `index.html` | Página inicial |
+
+### Header do Formulário└── /posts/└── /posts/
+
+
+
+| Botão | Função | Efeito |    ├── /                → posts/index.html (Lista de posts)    ├── /                → posts/index.html (Lista de posts)
+
+|-------|--------|--------|
+
+| 🧪 **Preencher Teste** | Preenche com dados fictícios | **Alterna entre 5 versões** a cada clique |    └── /slug-do-post.html → Post individual    └── /slug-do-post.html → Post individual
+
+| 🗑️ **Limpar Campos** | Limpa formulário + localStorage | Com confirmação |
+
+| ⚙️ **Configurar GitHub** | Abre modal de token | Para publicação direta |``````
+
+
+
+### 🧪 Botão "Preencher Teste" - 5 Versões
+
+
+
+O botão **alterna entre 5 versões diferentes** de conteúdo a cada clique:### Exemplo Prático### Exemplo Prático
+
+
+
+```
+
+1º clique → Versão 1: Marble vs Granite
+
+2º clique → Versão 2: Kitchen Island Ideas| URL | Arquivo | Descrição || URL | Arquivo | Descrição |
+
+3º clique → Versão 3: Quartz vs Granite
+
+4º clique → Versão 4: Bathroom Vanity|-----|---------|-----------||-----|---------|-----------|
+
+5º clique → Versão 5: How to Care for Granite
+
+6º clique → Volta para Versão 1 (ciclo)| `blog.exemplo.com/` | `index.html` | Página inicial || `blog.exemplo.com/` | `index.html` | Página inicial |
+
+```
 
 | `blog.exemplo.com/postin` | `postin.html` | Formulário admin || `blog.exemplo.com/postin` | `postin.html` | Formulário admin |
 
+**⚠️ IMPORTANTE:** Para outros nichos, edite o array `testDataVersions` em `assets/js/form-script.js`.
+
 | `blog.exemplo.com/posts/guia-granito.html` | `posts/guia-granito.html` | Post publicado || `blog.exemplo.com/posts/guia-granito.html` | `posts/guia-granito.html` | Post publicado |
 
-
-
-### Geração de Slug### Geração de Slug
-
-
-
-O slug é gerado automaticamente a partir do título:O slug é gerado automaticamente a partir do título:
+### Rodapé do Formulário
 
 
 
-```javascript```javascript
+| Botão | Função | Efeito |
 
-// Entrada: "Como Instalar Granito na Cozinha em 5 Passos"// Entrada: "Como Instalar Granito na Cozinha em 5 Passos"
+|-------|--------|--------|### Geração de Slug### Geração de Slug
 
-// Saída:   "instalar-granito-cozinha-5-passos"// Saída:   "instalar-granito-cozinha-5-passos"
+| 👁️ **Pré-visualizar** | Abre modal de preview | Mostra como ficará |
+
+| ✨ **Gerar Post** | Gera HTML e publica/download | Salva arquivo |
 
 
+
+### Funcionalidades AutomáticasO slug é gerado automaticamente a partir do título:O slug é gerado automaticamente a partir do título:
+
+
+
+| Funcionalidade | Descrição |
+
+|----------------|-----------|
+
+| 💾 **Auto-Save** | Salva no localStorage a cada 2s |```javascript```javascript
+
+| 📊 **Contador de Caracteres** | Mostra limite em tempo real |
+
+| 📝 **Contador de Palavras** | Para introdução/conteúdo/conclusão |// Entrada: "Como Instalar Granito na Cozinha em 5 Passos"// Entrada: "Como Instalar Granito na Cozinha em 5 Passos"
+
+| 🔄 **Geração de Slug** | Automática ao digitar título |
+
+| ⏱️ **Tempo de Leitura** | Calculado automaticamente |// Saída:   "instalar-granito-cozinha-5-passos"// Saída:   "instalar-granito-cozinha-5-passos"
+
+| 🔗 **Conversão Google Drive** | URLs do Drive convertidas automaticamente |
+
+
+
+---
 
 // Regras aplicadas:// Regras aplicadas:
 
+## 🔌 INTEGRAÇÃO COM GITHUB
+
 // 1. Converte para minúsculas// 1. Converte para minúsculas
+
+### Opção 1: Download Manual
 
 // 2. Remove acentos// 2. Remove acentos
 
-// 3. Remove stopwords (o, a, de, da, em, etc.)// 3. Remove stopwords (o, a, de, da, em, etc.)
+```
 
-// 4. Substitui espaços por hífens// 4. Substitui espaços por hífens
+1. Preencher formulário// 3. Remove stopwords (o, a, de, da, em, etc.)// 3. Remove stopwords (o, a, de, da, em, etc.)
 
-// 5. Remove caracteres especiais// 5. Remove caracteres especiais
+2. Clicar "Gerar Post"
+
+3. Baixar arquivo .html// 4. Substitui espaços por hífens// 4. Substitui espaços por hífens
+
+4. Mover para pasta /posts/
+
+5. git add . && git commit -m "novo post" && git push// 5. Remove caracteres especiais// 5. Remove caracteres especiais
+
+```
 
 ``````
 
+### Opção 2: GitHub API (Automático) ⭐
 
 
-------
 
+```javascript
 
+// Configuração inicial (uma vez)------
+
+1. Criar token em: github.com/settings/tokens
+
+2. Permissão: "repo" (full control)
+
+3. Colar no modal "Configurar GitHub"
 
 ## 📝 PÁGINA DE FORMULÁRIO (postin.html)## 📝 PÁGINA DE FORMULÁRIO (postin.html)
 
+// Uso
+
+- O post é enviado diretamente para o repositório
+
+- GitHub Pages publica automaticamente
+
+```### Visão Geral### Visão Geral
 
 
-### Visão Geral### Visão Geral
+
+### Arquivo github-api.js
 
 
 
-O formulário está dividido em **9 blocos organizados**:O formulário está dividido em **8 blocos organizados**:
+```javascriptO formulário está dividido em **9 blocos organizados**:O formulário está dividido em **8 blocos organizados**:
 
+class GitHubBlogPublisher {
 
+    constructor(config) {
 
-### 🧱 BLOCO 1: Identidade do Post### 🧱 BLOCO 1: Identidade do Post
+        this.owner = 'usuario';      // Dono do repo
 
+        this.repo = 'nome-repo';     // Nome do repo### 🧱 BLOCO 1: Identidade do Post### 🧱 BLOCO 1: Identidade do Post
 
+        this.token = 'ghp_xxx';      // Token de acesso
+
+        this.branch = 'main';        // Branch principal
+
+    }
 
 | Campo | Obrigatório | Descrição || Campo | Obrigatório | Descrição |
 
-|-------|-------------|-----------||-------|-------------|-----------|
+    // Métodos principais:
 
-| Título (H1) | ✅ | Máx. 60 caracteres || Título (H1) | ✅ | Máx. 60 caracteres |
+    async savePost(slug, htmlContent)  // Salva/atualiza post|-------|-------------|-----------||-------|-------------|-----------|
 
-| Slug | Auto | Gerado do título, editável || Slug | Auto | Gerado do título, editável |
+    async getFile(path)                // Verifica se existe
+
+    async createFile(path, content)    // Cria novo arquivo| Título (H1) | ✅ | Máx. 60 caracteres || Título (H1) | ✅ | Máx. 60 caracteres |
+
+    async updateFile(path, content)    // Atualiza existente
+
+}| Slug | Auto | Gerado do título, editável || Slug | Auto | Gerado do título, editável |
+
+```
 
 | Categoria | ✅ | Guia, Tutorial, Blog, Dicas, etc. || Categoria | ✅ | Guia, Tutorial, Blog, Dicas, etc. |
 
+---
+
 | Autor | ✅ | Nome do autor || Autor | ✅ | Nome do autor |
+
+## 📤 PROCESSO DE PUBLICAÇÃO
 
 | Avatar | ❌ | URL da foto do autor || Avatar | ❌ | URL da foto do autor |
 
+### Fluxo com GitHub Token (Automático)
+
 | Data | Auto | Data de publicação || Data | Auto | Data de publicação |
 
-| Tempo de Leitura | Auto | Calculado automaticamente || Tempo de Leitura | Auto | Calculado automaticamente |
+```
 
+┌──────────────┐     ┌─────────────┐     ┌──────────────┐| Tempo de Leitura | Auto | Calculado automaticamente || Tempo de Leitura | Auto | Calculado automaticamente |
 
+│   Formulário │ ──→ │ GitHub API  │ ──→ │ GitHub Pages │
 
-### 🧠 BLOCO 2: SEO Essencial### 🧠 BLOCO 2: SEO Essencial
+│   postin.html│     │ (Direto)    │     │   (Live)     │
 
+└──────────────┘     └─────────────┘     └──────────────┘
 
+       ↓                    ↓                   ↓### 🧠 BLOCO 2: SEO Essencial### 🧠 BLOCO 2: SEO Essencial
+
+   Preencher           POST /posts/       Publicado em
+
+   campos              slug.html          ~30 segundos
+
+```
 
 | Campo | Obrigatório | Descrição || Campo | Obrigatório | Descrição |
 
+### Fluxo Manual (Download)
+
 |-------|-------------|-----------||-------|-------------|-----------|
 
-| Keyword Principal | ✅ | Palavra-chave foco || Keyword Principal | ✅ | Palavra-chave foco |
+```
 
-| Keywords Secundárias | ❌ | 3-5, separadas por vírgula || Keywords Secundárias | ❌ | 3-5, separadas por vírgula |
+┌──────────────┐     ┌─────────────┐     ┌──────────────┐| Keyword Principal | ✅ | Palavra-chave foco || Keyword Principal | ✅ | Palavra-chave foco |
 
-| Meta Title | ✅ | Até 60 caracteres || Meta Title | ✅ | Até 60 caracteres |
+│   Formulário │ ──→ │  Download   │ ──→ │  git push    │
 
-| Meta Description | ✅ | 140-160 caracteres || Meta Description | ✅ | 140-160 caracteres |
+│   postin.html│     │   .html     │     │              │| Keywords Secundárias | ❌ | 3-5, separadas por vírgula || Keywords Secundárias | ❌ | 3-5, separadas por vírgula |
+
+└──────────────┘     └─────────────┘     └──────────────┘
+
+       ↓                    ↓                   ↓| Meta Title | ✅ | Até 60 caracteres || Meta Title | ✅ | Até 60 caracteres |
+
+   Preencher          Salvar em            Publicado
+
+   campos             /posts/| Meta Description | ✅ | 140-160 caracteres || Meta Description | ✅ | 140-160 caracteres |
+
+```
 
 | Intenção de Busca | ✅ | Informacional, Comercial, etc. || Intenção de Busca | ✅ | Informacional, Comercial, etc. |
 
+---
 
+
+
+## 🔄 COMO REPLICAR O PROJETO
 
 ### 🖼️ BLOCO 3: Imagens### 🖼️ BLOCO 3: Imagens
 
+### Checklist de Replicação
 
+
+
+```
+
+☐ 1. Clonar repositório| Campo | Obrigatório | Descrição || Campo | Obrigatório | Descrição |
+
+☐ 2. Atualizar github-api.js (owner, repo)
+
+☐ 3. Atualizar postin.html (URLs, logos)|-------|-------------|-----------||-------|-------------|-----------|
+
+☐ 4. Personalizar testDataVersions para o nicho
+
+☐ 5. Atualizar templates/post-template.html| Imagem de Capa | ✅ | URL da imagem principal (1200x630) || Imagem de Capa | ✅ | URL da imagem principal (1200x630) |
+
+☐ 6. Configurar GitHub Pages no repositório
+
+☐ 7. Habilitar GitHub Actions (Settings > Actions)| Alt Text Capa | ✅ | Texto alternativo com keyword || Alt Text Capa | ✅ | Texto alternativo com keyword |
+
+☐ 8. Testar publicação com as 5 versões de teste
+
+```| Legenda | ❌ | Legenda opcional || Legenda | ❌ | Legenda opcional |
+
+
+
+### Passo 1: Clonar Repositório| Imagens Internas | ❌ | Botão para adicionar múltiplas || Imagens Internas | ❌ | Botão para adicionar múltiplas |
+
+
+
+```bash
+
+git clone https://github.com/SEU-USUARIO/SEU-REPO.git
+
+cd SEU-REPO### ✍️ BLOCO 4: Conteúdo### ✍️ BLOCO 4: Conteúdo
+
+```
+
+
+
+### Passo 2: Atualizar github-api.js
 
 | Campo | Obrigatório | Descrição || Campo | Obrigatório | Descrição |
 
-|-------|-------------|-----------||-------|-------------|-----------|
+```javascript
 
-| Imagem de Capa | ✅ | URL da imagem principal (1200x630) || Imagem de Capa | ✅ | URL da imagem principal (1200x630) |
+// Linha 5-10|-------|-------------|-----------||-------|-------------|-----------|
 
-| Alt Text Capa | ✅ | Texto alternativo com keyword || Alt Text Capa | ✅ | Texto alternativo com keyword |
+this.owner = 'seu-usuario';
 
-| Legenda | ❌ | Legenda opcional || Legenda | ❌ | Legenda opcional |
+this.repo = 'seu-repositorio';| Introdução | ✅ | 100-150 palavras || Introdução | ✅ | 100-150 palavras |
 
-| Imagens Internas | ❌ | Botão para adicionar múltiplas || Imagens Internas | ❌ | Botão para adicionar múltiplas |
+this.branch = 'main';
 
-
-
-### ✍️ BLOCO 4: Conteúdo### ✍️ BLOCO 4: Conteúdo
+```| Conteúdo Principal | ✅ | Aceita HTML (h2, h3, p, ul, ol) || Conteúdo Principal | ✅ | Aceita HTML (h2, h3, p, ul, ol) |
 
 
 
-| Campo | Obrigatório | Descrição || Campo | Obrigatório | Descrição |
-
-|-------|-------------|-----------||-------|-------------|-----------|
-
-| Introdução | ✅ | 100-150 palavras || Introdução | ✅ | 100-150 palavras |
-
-| Conteúdo Principal | ✅ | Aceita HTML (h2, h3, p, ul, ol) || Conteúdo Principal | ✅ | Aceita HTML (h2, h3, p, ul, ol) |
-
-| Conclusão | ✅ | Resumo final do post || Conclusão | ✅ | Resumo + CTA |
+### Passo 3: Personalizar 5 Versões de Teste| Conclusão | ✅ | Resumo final do post || Conclusão | ✅ | Resumo + CTA |
 
 
 
-**Toolbar de Edição:****Toolbar de Edição:**
-
-- Botões: `H2` | `H3` | `Parágrafo` | `Lista` | `Negrito` | `Itálico`- Botões: `H2` | `H3` | `Parágrafo` | `Lista` | `Negrito` | `Itálico`
+Edite `assets/js/form-script.js`:
 
 
 
-### 🔗 BLOCO 5: Links### 🔗 BLOCO 5: Links
+```javascript**Toolbar de Edição:****Toolbar de Edição:**
+
+const testDataVersions = [
+
+    {- Botões: `H2` | `H3` | `Parágrafo` | `Lista` | `Negrito` | `Itálico`- Botões: `H2` | `H3` | `Parágrafo` | `Lista` | `Negrito` | `Itálico`
+
+        h1Title: 'Título do Post 1 para SEU NICHO',
+
+        slug: 'slug-do-post-1',
+
+        category: 'Guia',
+
+        // ... demais campos### 🔗 BLOCO 5: Links### 🔗 BLOCO 5: Links
+
+    },
+
+    // ... mais 4 versões
+
+];
+
+```| Campo | Descrição || Campo | Descrição |
 
 
 
-| Campo | Descrição || Campo | Descrição |
-
-|-------|-----------||-------|-----------|
-
-| Links Internos | 2-4 por post (URL + Anchor) || Links Internos | 2-4 por post (URL + Anchor) |
-
-| Links Externos | 1-2 sites confiáveis || Links Externos | 1-2 sites confiáveis |
+### Passo 4: Habilitar GitHub Actions|-------|-----------||-------|-----------|
 
 
+
+```| Links Internos | 2-4 por post (URL + Anchor) || Links Internos | 2-4 por post (URL + Anchor) |
+
+1. Vá em Settings → Actions → General
+
+2. Em "Workflow permissions": | Links Externos | 1-2 sites confiáveis || Links Externos | 1-2 sites confiáveis |
+
+   ✅ Read and write permissions
+
+3. Salvar
+
+```
 
 ### 🏷️ BLOCO 6: Tags### 🏷️ BLOCO 6: Tags
 
+---
 
+
+
+## 🔧 TROUBLESHOOTING
 
 | Campo | Obrigatório | Descrição || Campo | Obrigatório | Descrição |
 
+### Erro: "Post não publicou"
+
 |-------|-------------|-----------||-------|-------------|-----------|
 
-| Tags | ✅ | 3-6, separadas por vírgula || Tags | ✅ | 3-6, separadas por vírgula |
+1. Verifique se o token tem permissão `repo`
+
+2. Verifique se o repositório está correto em `github-api.js`| Tags | ✅ | 3-6, separadas por vírgula || Tags | ✅ | 3-6, separadas por vírgula |
+
+3. Teste a conexão no modal "Configurar GitHub"
 
 | Posts Relacionados | ❌ | URLs separadas por vírgula || Posts Relacionados | ❌ | URLs separadas por vírgula |
 
+### Erro: "GitHub Actions não executa"
 
 
-### 🚀 BLOCO 7: Engajamento (CTA)### 🚀 BLOCO 7: Engajamento (CTA)
+
+1. Vá em Settings → Actions → General
+
+2. Marque "Allow all actions and reusable workflows"### 🚀 BLOCO 7: Engajamento (CTA)### 🚀 BLOCO 7: Engajamento (CTA)
+
+3. Em Workflow permissions, marque "Read and write permissions"
 
 
+
+### Erro: "Categoria não selecionada"
 
 | Campo | Obrigatório | Descrição || Campo | Obrigatório | Descrição |
 
-|-------|-------------|-----------||-------|-------------|-----------|
+O teste usa categorias do dropdown HTML:
 
-| Título CTA | ✅ | Ex: "Precisa de ajuda?" || Título CTA | ✅ | Ex: "Precisa de ajuda?" |
-
-| Texto CTA | ✅ | Descrição do call-to-action || Texto CTA | ✅ | Descrição do call-to-action |
-
-| Link CTA | ✅ | URL de destino || Link CTA | ✅ | URL de destino |
-
-| Texto Botão | ✅ | Ex: "Solicitar Orçamento" || Texto Botão | ✅ | Ex: "Solicitar Orçamento" |
+- Guia, Tutorial, Blog, Vlog, Dicas, Novidades|-------|-------------|-----------||-------|-------------|-----------|
 
 
 
-### ⚙️ BLOCO 8: Configurações### ⚙️ BLOCO 8: Configurações
+Não use categorias personalizadas como "Granite Countertops".| Título CTA | ✅ | Ex: "Precisa de ajuda?" || Título CTA | ✅ | Ex: "Precisa de ajuda?" |
 
 
 
-| Campo | Descrição || Campo | Descrição |
-
-|-------|-----------||-------|-----------|
-
-| URL Base | URL principal do site || URL Base | URL principal do site |
-
-| URL Logo | Para Schema.org || URL Logo | Para Schema.org |
-
-| Comentários | Habilitar/Desabilitar || Comentários | Habilitar/Desabilitar |
-
-| Compartilhamento | Botões sociais || Compartilhamento | Botões sociais |
+### Erro: "Imagens não carregam"| Texto CTA | ✅ | Descrição do call-to-action || Texto CTA | ✅ | Descrição do call-to-action |
 
 
 
-### 🤖 BLOCO 9: Template para IA (Copiar e Colar)---
+- Use URLs públicas (https://)| Link CTA | ✅ | URL de destino || Link CTA | ✅ | URL de destino |
 
+- Para Google Drive, use o formato de visualização direta
+
+- Unsplash recomendado para testes| Texto Botão | ✅ | Ex: "Solicitar Orçamento" || Texto Botão | ✅ | Ex: "Solicitar Orçamento" |
+
+
+
+---
+
+
+
+## 📊 VERSÕES DO SISTEMA### ⚙️ BLOCO 8: Configurações### ⚙️ BLOCO 8: Configurações
+
+
+
+| Versão | Data | Mudanças |
+
+|--------|------|----------|
+
+| 4.1 | 2026-01 | 5 versões de teste, publicação automática || Campo | Descrição || Campo | Descrição |
+
+| 4.0 | 2026-01 | Removido PHP, GitHub Pages only |
+
+| 3.0 | 2025-12 | Auto-save, GitHub API ||-------|-----------||-------|-----------|
+
+| 2.0 | 2025-11 | Template IA, 8 blocos |
+
+| 1.0 | 2025-10 | Versão inicial || URL Base | URL principal do site || URL Base | URL principal do site |
+
+
+
+---| URL Logo | Para Schema.org || URL Logo | Para Schema.org |
+
+
+
+## 📞 SUPORTE| Comentários | Habilitar/Desabilitar || Comentários | Habilitar/Desabilitar |
+
+
+
+- **Repositório:** github.com/mediagrowthmkt-debug/protec-blog| Compartilhamento | Botões sociais || Compartilhamento | Botões sociais |
+
+- **Documentação:** Este arquivo
+
+- **Issues:** Via GitHub Issues
+
+
+
+---### 🤖 BLOCO 9: Template para IA (Copiar e Colar)---
+
+
+
+*Última atualização: Janeiro 2026*
 
 
 O formulário inclui um **template completo para usar com ChatGPT/Claude** que gera todo o conteúdo do post automaticamente.## 🔘 BOTÕES E FUNCIONALIDADES
