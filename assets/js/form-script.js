@@ -712,9 +712,41 @@ async function handleFormSubmit(e) {
 }
 
 async function savePostToServer(html, slug) {
-    // GitHub Pages - usa apenas download manual
-    // O HTML será baixado pelo botão no modal de sucesso
-    console.log('� Preparando post para download...', slug);
+    // Verifica se há token GitHub configurado
+    const githubToken = localStorage.getItem('github_token');
+    
+    if (githubToken) {
+        // ✅ Token configurado - publica automaticamente no GitHub
+        console.log('🚀 Token GitHub encontrado! Publicando automaticamente...');
+        
+        try {
+            const publisher = window.initGitHubPublisher();
+            
+            if (publisher) {
+                console.log('📤 Enviando post para GitHub /posts/...');
+                await publisher.savePost(slug, html);
+                const publicUrl = publisher.getPublicUrl(slug);
+                
+                console.log('✅ Post publicado com sucesso!');
+                console.log('🔗 URL:', publicUrl);
+                
+                return {
+                    success: true,
+                    method: 'github-api',
+                    filename: slug + '.html',
+                    url: publicUrl,
+                    message: '✅ Post publicado automaticamente no GitHub!'
+                };
+            }
+        } catch (error) {
+            console.error('❌ Erro ao publicar no GitHub:', error);
+            console.warn('⚠️ Fallback para download manual...');
+            // Continua para download manual como fallback
+        }
+    }
+    
+    // ❌ Sem token ou erro - usa download manual
+    console.log('📥 Preparando post para download manual...');
     return savePostAsDownload(html, slug);
 }
 
@@ -1057,10 +1089,21 @@ function showSuccess(slug, result) {
         modal.querySelector('.modal-content').appendChild(messageElement);
     }
     
-    if (result && result.method === 'download') {
-        messageElement.innerHTML = '✅ <strong>Post gerado com sucesso!</strong><br>Baixe o HTML e faça commit na pasta <code>posts/</code> do GitHub.';
+    if (result && result.method === 'github-api') {
+        // ✅ Publicado automaticamente via GitHub API
+        messageElement.innerHTML = '🚀 <strong>Post publicado automaticamente no GitHub!</strong><br>O post já está online em <code>/posts/</code>. Aguarde ~1 minuto para o GitHub Pages atualizar.';
         messageElement.style.backgroundColor = '#d4edda';
         messageElement.style.color = '#155724';
+        messageElement.style.fontWeight = 'bold';
+        
+        // Se tiver URL, mostra
+        if (result.url) {
+            messageElement.innerHTML += `<br><br>🔗 <a href="${result.url}" target="_blank" style="color: #155724;">${result.url}</a>`;
+        }
+    } else if (result && result.method === 'download') {
+        messageElement.innerHTML = '✅ <strong>Post gerado com sucesso!</strong><br>Baixe o HTML e faça commit na pasta <code>posts/</code> do GitHub.';
+        messageElement.style.backgroundColor = '#fff3cd';
+        messageElement.style.color = '#856404';
         messageElement.style.fontWeight = 'bold';
     } else {
         messageElement.textContent = '✅ Post gerado com sucesso!';
